@@ -1,0 +1,32 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["Hello", "Hi", "Whats up", "How are you", "Anyone there"],
+      "responses": ["Hello!", "Hi there", "Good to see you"],
+      "context_set": ""
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "cya", "Farewell", "Goodbye", "Goodnight"],
+      "responses": ["Goodbye!", "Talk to you later", "Later bro"],
+      "context_set": ""
+    },
+    {
+      "tag": "identity",
+      "patterns": [
+        "Who are you",
+        "Who is this",
+        "What you are",
+        "Why",
+        "What can you do"
+      ],
+      "responses": [
+        "I am your virtual assistant",
+        "I am better than Siri",
+        "Your worst nightmare"
+      ],
+      "context_set": ""
+    }
+  ]
+}
