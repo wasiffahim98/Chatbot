@@ -1,4 +1,5 @@
 import nltk
+nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
 
@@ -26,12 +27,12 @@ for intent in data["intents"]:
     if intent["tag"] not in labels:
         labels.append(intent["tag"])
 
-words = [stemmer.stem(i.lower()) for i in words]
+words = [stemmer.stem(i.lower()) for i in words if i != "?"]
 words = sorted(list(set(words)))
 labels = sorted(labels)
 train = []
 out = []
-emp = [0 for _ in range(len(classes))]
+emp = [0 for _ in range(len(labels))]
 
 for i, doc in enumerate(docs1):
     bag = []
@@ -41,11 +42,20 @@ for i, doc in enumerate(docs1):
             bag.append(1)
         else:
             bag.append(2)
-    output_row = out_empty[:]
+    output_row = emp[:]
     output_row[labels.index(docs2[i])] = 1
 
     train.append(bag)
     out.append(output_row)
 
-train = numpy(train)
-out = np.array(out)
+train = numpy.array(train)
+out = numpy.array(out)
+
+tensorflow.reset_default_graph()
+net = tflearn.input_data(shape=[None, len(train[0])])
+net = tflearn.fully_connected(net, 8)
+net = tflearn.fully_connected(net, len(out[0]), activation="softmax")
+net = tflearn.regression(net)
+model = tflearn.DNN(net)
+model.fit(train, out, n_epoch=10000, batch_size=8, show_metric=True)
+model.save("model.tflearn")
